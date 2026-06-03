@@ -1,0 +1,132 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+//declaring all of the functions being used throughout the program
+void displayIntro (); //displays the welcome message
+string getDate (); //gets the date from the user
+int getAttendance (); //gets attendance status with validation
+void takeAttendance (vector<string>& names, vector<string>& attendance, ofstream& MyFile); //records attendance for every student
+void displayAttendance (vector<string>& names, vector<string>& attendance); //displays all attendance results
+
+int main ()
+{
+    //list of everybodys names in alphabetical order
+    vector<string> names = {
+        "Envy Brown",
+        "Ilyas Devaux",
+        "Damon Diulio",
+        "Hamir Griffith",
+        "Anthony Landritsi",
+        "Bode Lentz",
+        "George Louglos",
+        "Jordan McKenzie",
+        "Christopher Richter",
+        "Caleb Roswell",
+        "Seth Scott",
+        "Tiahna Spencer",
+        "Bailin Stokes",
+        "Elijah Verdaguer",
+        "Connor Wentworth"
+    };
+
+    //stores the attendance results
+    vector<string> attendance;
+
+    displayIntro();
+
+    //asks the user for the current date
+    string date = getDate();
+
+    //make a text file using the date provided
+    ofstream MyFile(date + ".txt");
+
+    //records attendance for every student
+    takeAttendance(names, attendance, MyFile);
+
+    //display all attendance results
+    displayAttendance(names, attendance);
+
+    //close the file
+    MyFile.close();
+
+    return 0;
+}
+
+void displayIntro () { //displays the welcome message
+    cout << "-----------------------------------" << endl;
+    cout << "|                                 |" << endl;
+    cout << "|      Attendance Program         |" << endl;
+    cout << "|                                 |" << endl;
+    cout << "-----------------------------------" << endl;
+    cout << endl;
+}
+
+string getDate () { //gets the date from the user
+    string date;
+
+    cout << "Enter date as month-day-year\n";
+    cin >> date;
+
+    return date;
+}
+
+int getAttendance () { //gets attendance status with validation
+    int attendanceStatus = 0;
+
+    cin >> attendanceStatus;
+
+    while (!cin or attendanceStatus < 1 or attendanceStatus > 2) {
+        cout << "Invalid input. Enter 1 for Yes or 2 for No: ";
+
+        cin.clear();
+        cin.ignore(10000, '\n');
+
+        cin >> attendanceStatus;
+    }
+
+    return attendanceStatus;
+}
+
+void takeAttendance (vector<string>& names, vector<string>& attendance, ofstream& MyFile) { //records attendance for every student
+    for (int i = 0; i < names.size(); i++) {
+
+        cout << "\n-----------------------------------" << endl;
+        cout << "Is " << names[i] << " present?" << endl;
+        cout << "1 - Yes" << endl;
+        cout << "2 - No" << endl;
+        cout << "Enter choice (1-2): ";
+
+        int attendances = getAttendance();
+
+        if (attendances == 1) { //student is present
+
+            MyFile << names[i] << ", attendance: present\n" << endl;
+
+            attendance.push_back(", attendance: present");
+
+        } else { //student is absent
+
+            MyFile << names[i] << ", attendance: absent\n" << endl;
+
+            attendance.push_back(", attendance: absent");
+        }
+    }
+}
+
+void displayAttendance (vector<string>& names, vector<string>& attendance) { //displays all attendance results
+    cout << "\n===================================" << endl;
+    cout << "       ATTENDANCE RESULTS" << endl;
+    cout << "===================================" << endl;
+
+    for (int i = 0; i < names.size(); i++) {
+
+        cout << names[i] << attendance[i] << endl << endl;
+
+    }
+
+    cout << "===================================" << endl;
+}
