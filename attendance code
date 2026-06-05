@@ -69,7 +69,14 @@ string getDate () { //gets the date from the user
     string date;
 
     cout << "Enter date as month-day-year\n";
-    cin >> date;
+    getline (cin, date);
+do {
+    k++;
+    if (date[k] == '/' or date[k] == '\') {
+        cout << "Please enter the date again without the use of slashes.";
+        getline (cin, date);
+    }
+} while (k < date.length());
 
     return date;
 }
